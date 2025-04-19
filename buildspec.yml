@@ -4,16 +4,15 @@ phases:
   install:
     runtime-versions:
       nodejs: 22
-    commands:
-      - echo "Installing dependencies..."
-      - npm ci || npm install
-
   build:
     commands:
-      - echo "Zipping Lambda package..."
+      - echo 'Building Lambda function...'
       - zip -r lambda-deploy.zip index.js node_modules package.json
-
-artifacts:
-  files:
-    - lambda-deploy.zip
-    - appspec.yml
+  post_build:
+    commands:
+      - echo 'Updating Lambda function...'
+      - aws lambda update-function-code --function-name my-lambda-function2 --zip-file fileb://lambda_function.zip
+      - echo 'Waiting for 30 seconds before publishing version...'
+      - sleep 30  # Add a delay to ensure update completes
+      - echo 'Publishing new Lambda version...'
+      - aws lambda publish-version --function-name my-lambda-function2
