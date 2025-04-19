@@ -11,7 +11,7 @@ phases:
   post_build:
     commands:
       - echo 'Updating Lambda function...'
-      - aws lambda update-function-code --function-name my-lambda-function2 --zip-file fileb://lambda_function.zip
+      - aws lambda update-function-code --function-name my-lambda-function2 --zip-file fileb://lambda-deploy.zip
       - echo 'Waiting for 30 seconds before publishing version...'
       - sleep 30  # Add a delay to ensure update completes
       - echo 'Publishing new Lambda version...'
