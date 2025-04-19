@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 22
+    commands:
+      - echo "Installing dependencies..."
+      - npm ci || npm install
+
+  build:
+    commands:
+      - echo "Zipping Lambda package..."
+      - zip -r lambda-deploy.zip index.js node_modules package.json
+
+artifacts:
+  files:
+    - lambda-deploy.zip
+    - appspec.yml
